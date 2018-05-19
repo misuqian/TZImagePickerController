@@ -47,10 +47,24 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+-(BOOL)shouldAutorotate{
+    return self.surportMask == UIInterfaceOrientationMaskAll;
+}
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return self.surportMask;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if(!self.collectBackgroundColor){
+        self.collectBackgroundColor = [UIColor whiteColor];
+    }
+    if(!self.surportMask){
+        self.surportMask = UIInterfaceOrientationMaskAll;
+    }
     self.needShowStatusBar = ![UIApplication sharedApplication].statusBarHidden;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = self.collectBackgroundColor;
     self.navigationBar.barStyle = UIBarStyleBlack;
     self.navigationBar.translucent = YES;
     [TZImageManager manager].shouldFixOrientation = NO;
@@ -96,14 +110,9 @@
     self.navigationBar.titleTextAttributes = textAttrs;
 }
 
-- (void)setBarItemTextFont:(UIFont *)barItemTextFont {
-    _barItemTextFont = barItemTextFont;
-    [self configBarButtonItemAppearance];
-}
-
 - (void)setBarItemTextColor:(UIColor *)barItemTextColor {
-    _barItemTextColor = barItemTextColor;
-    [self configBarButtonItemAppearance];
+    self.navigationBar.tintColor = barItemTextColor;
+//    [self configBarButtonItemAppearance];
 }
 
 - (void)setIsStatusBarDefault:(BOOL)isStatusBarDefault {
@@ -116,18 +125,18 @@
     }
 }
 
-- (void)configBarButtonItemAppearance {
-    UIBarButtonItem *barItem;
-    if (iOS9Later) {
-        barItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[TZImagePickerController class]]];
-    } else {
-        barItem = [UIBarButtonItem appearanceWhenContainedIn:[TZImagePickerController class], nil];
-    }
-    NSMutableDictionary *textAttrs = [NSMutableDictionary dictionary];
-    textAttrs[NSForegroundColorAttributeName] = self.barItemTextColor;
-    textAttrs[NSFontAttributeName] = self.barItemTextFont;
-    [barItem setTitleTextAttributes:textAttrs forState:UIControlStateNormal];
-}
+//- (void)configBarButtonItemAppearance {
+//    UIBarButtonItem *barItem;
+//    if (iOS9Later) {
+//        barItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[TZImagePickerController class]]];
+//    } else {
+//        barItem = [UIBarButtonItem appearanceWhenContainedIn:[TZImagePickerController class], nil];
+//    }
+//    NSMutableDictionary *textAttrs = [NSMutableDictionary dictionary];
+//    textAttrs[NSForegroundColorAttributeName] = self.barItemTextColor;
+//    textAttrs[NSFontAttributeName] = self.barItemTextFont;
+//    [barItem setTitleTextAttributes:textAttrs forState:UIControlStateNormal];
+//}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -268,7 +277,6 @@
     self.photoPreviewMaxWidth = 600;
     self.naviTitleColor = [UIColor whiteColor];
     self.naviTitleFont = [UIFont systemFontOfSize:17];
-    self.barItemTextFont = [UIFont systemFontOfSize:15];
     self.barItemTextColor = [UIColor whiteColor];
     self.allowPreview = YES;
     self.statusBarStyle = UIStatusBarStyleLightContent;
@@ -757,6 +765,7 @@
                 if (!self->_tableView) {
                     self->_tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
                     self->_tableView.rowHeight = 70;
+                    self->_tableView.backgroundColor = imagePickerVc.collectBackgroundColor;
                     self->_tableView.tableFooterView = [[UIView alloc] init];
                     self->_tableView.dataSource = self;
                     self->_tableView.delegate = self;

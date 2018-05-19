@@ -339,7 +339,11 @@
 /// For fitting iOS6
 - (void)layoutSubviews {
     if (iOS7Later) [super layoutSubviews];
-    _selectedCountButton.frame = CGRectMake(self.tz_width - 24 - 30, 23, 24, 24);
+    if (@available(iOS 11.0, *)) {
+        _selectedCountButton.frame = CGRectMake(self.tz_width - 24 - 30 - self.safeAreaInsets.right - self.safeAreaInsets.left, 23, 24, 24);
+    } else {
+        _selectedCountButton.frame = CGRectMake(self.tz_width - 24 - 30, 23, 24, 24);
+    }
     NSInteger titleHeight = ceil(self.titleLabel.font.lineHeight);
     self.titleLabel.frame = CGRectMake(80, (self.tz_height - titleHeight) / 2, self.tz_width - 80 - 50, titleHeight);
     self.posterImageView.frame = CGRectMake(0, 0, 70, 70);

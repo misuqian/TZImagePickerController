@@ -45,6 +45,11 @@
 - (instancetype)initCropTypeWithAsset:(id)asset photo:(UIImage *)photo completion:(void (^)(UIImage *cropImage,id asset))completion;
 
 #pragma mark -
+/// Default is white color with 0.8 alpha;
+@property (strong, nonatomic) UIColor *collectBackgroundColor;
+/// 支持的转向
+@property (nonatomic, assign) UIInterfaceOrientationMask surportMask;
+
 /// Default is 9 / 默认最大可选9张图片
 @property (nonatomic, assign) NSInteger maxImagesCount;
 
@@ -203,7 +208,6 @@
 @property (nonatomic, strong) UIColor *naviTitleColor;
 @property (nonatomic, strong) UIFont *naviTitleFont;
 @property (nonatomic, strong) UIColor *barItemTextColor;
-@property (nonatomic, strong) UIFont *barItemTextFont;
 
 @property (nonatomic, copy) NSString *doneBtnTitleStr;
 @property (nonatomic, copy) NSString *cancelBtnTitleStr;

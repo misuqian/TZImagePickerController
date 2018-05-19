@@ -145,9 +145,10 @@ static CGFloat itemMargin = 5;
 }
 
 - (void)configCollectionView {
+    TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
     _layout = [[UICollectionViewFlowLayout alloc] init];
     _collectionView = [[TZCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_layout];
-    _collectionView.backgroundColor = [UIColor whiteColor];
+    _collectionView.backgroundColor = tzImagePickerVc.collectBackgroundColor;
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     _collectionView.alwaysBounceHorizontal = NO;
